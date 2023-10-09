@@ -1,0 +1,11 @@
+**/_pycache_
+/data
+*.pth
+*.pickle
+*.pyc
+*.json
+*.txt
+/pretrained_ckpt
+/pretrain/data/
+*.gz
+pretrain/data/datasets
