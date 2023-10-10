@@ -7,7 +7,7 @@ import gc
 import threading
 import ttab.configs.algorithms as agrth
 #mission_id = '9263'
-mission_id = '104_formal_'
+mission_id = '109_formal_'
 
 
 model_adaptation_method_choices=[
@@ -73,11 +73,8 @@ inter_domain_choices=[
 
 
 def exp1(inter_domain_choices):
-    print("Starting exp1...")
-    
+    print("Starting exp1...")  
     for domain in tqdm(inter_domain_choices):
-        
-        
         for adaption_method in tqdm(model_adaptation_method_choices):
             i = 3
             corrruption = []
@@ -87,9 +84,9 @@ def exp1(inter_domain_choices):
                 if (j + 1) % 3 == 0:
                     args = parameters.get_args()
                     if adaption_method=='note':
-                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/TTAB/ttab-main/ttab-benchmarkData/rn26_iabn.pth'
+                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/ttab-main/ttab-benchmarkData/rn26_iabn.pth'
                     else: 
-                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/TTAB/ttab-main/ttab-benchmarkData/rn26_bn.pth'
+                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/ttab-main/ttab-benchmarkData/rn26_bn.pth'
                     args.job_id = mission_id + str(1)
                     args.inter_domain = domain
                     args.model_adaptation_method = adaption_method
@@ -133,7 +130,6 @@ def exp1(inter_domain_choices):
                   
                 
 def exp2(non_iid_ness_choices):
-    
     print("Starting exp2...")
     for non_iid in tqdm(non_iid_ness_choices):  
         for adaption_method in tqdm(model_adaptation_method_choices):
@@ -147,9 +143,9 @@ def exp2(non_iid_ness_choices):
                     args.job_id = mission_id+str(2)
                     args.non_iid_ness = non_iid
                     if adaption_method=='note':
-                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/TTAB/ttab-main/ttab-benchmarkData/rn26_iabn.pth'
+                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/ttab-main/ttab-benchmarkData/rn26_iabn.pth'
                     else:
-                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/TTAB/ttab-main/ttab-benchmarkData/rn26_bn.pth'
+                        args.ckpt_path='/data/TTA-exp/TTAB-jiang/ttab-main/ttab-benchmarkData/rn26_bn.pth'
                     args.model_adaptation_method = adaption_method
                     args.device="cuda:1"
                     args.batch_size=100
@@ -166,30 +162,18 @@ def exp2(non_iid_ness_choices):
                         break
                     else:
                         i = i + 3
-                    
-
                 j=j+1
     # pass
     print("exp2 has finished.")
 
 
 
-#设置job_id
-# args1.job_id = 'debug'
-
 t1 = threading.Thread(target=exp1,args=(inter_domain_choices,))
-t1.start()
-# exp1(inter_domain_choices)
-
-
-# args2.job_id = 'debug'
-        
+t1.start()        
 non_iid_ness_choices = [0.01, 0.03, 0.09, 0.27, 0.81, 1] 
-
 t2 = threading.Thread(target=exp2,args=(non_iid_ness_choices,))
 t2.start()
 t2.join()
-# exp2(non_iid_ness_choices)
 
 print('done')
 
