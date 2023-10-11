@@ -5,7 +5,7 @@ from typing import Any, Callable, Iterable, List, Mapping, Optional, Tuple, Unio
 import numpy as np
 import torch
 from torch.utils.data.dataset import random_split
-
+import ttab.utils.step_loss_grad as grad
 State = List[torch.Tensor]
 Gradient = List[torch.Tensor]
 Parameters = List[torch.Tensor]
@@ -201,12 +201,14 @@ class PyTorchDataset(object):
                 #     print(f"({idx// 10000 + 1}, {target})")
                 for value, count in domain_count.items():
                     print(f"Domain{value} got {count} pictures")
+                    grad.DomainNum[value]=count
                 
                 batch_target = pd.Series(batch_target)
                 target_count=batch_target.value_counts()
                 for value, count in target_count.items():
                     print(f"target{value} got {count} pictures")
                 combain = list(zip(domain,batch_target))
+                grad.Combine = combain
                 print('\n',combain)
                 print('------------------------------------------------------------------------------------------\n')
                 print('\n-------------------------------------Runtime Preview--------------------------------------')
