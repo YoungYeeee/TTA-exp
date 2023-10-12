@@ -94,7 +94,7 @@ class NoAdaptation(BaseAdaptation):
                 self.tta_loss_computer.loss(
                     y_hat, current_batch._y, current_batch._g, is_training=False
                 )
-
+        
     @property
     def name(self):
         return "no_adaptation"
