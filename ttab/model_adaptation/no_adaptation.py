@@ -87,6 +87,17 @@ class NoAdaptation(BaseAdaptation):
         with timer("test_time_adaptation"):
             with torch.no_grad():
                 y_hat = self._model(current_batch._x)
+                import ttab.utils.step_loss_grad as grad
+                self._meta_conf.step += 1
+                state={
+                    "model": copy.deepcopy(self._model).state_dict(),
+                    "lr": self._meta_conf.lr,
+                    "optimizer": None,
+                    "loss": None,
+                    "grads": None,
+                    "yhat": y_hat,
+                }
+                grad.saveAsCSV(self._meta_conf, state, current_batch)
 
         with timer("evaluate_adaptation_result"):
             metrics.eval(current_batch._y, y_hat)
