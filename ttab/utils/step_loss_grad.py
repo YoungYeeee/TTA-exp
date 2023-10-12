@@ -64,8 +64,6 @@ def saveAsCSV(conf: Any , state , batch):
             )
     if not os.path.exists(conf.grad_dir):
         os.makedirs(conf.grad_dir)
-    temp = state
-    loss = state["loss"]
     print(conf)
     if state["grads"] is not None:
         L2=getL2(state["grads"])
@@ -96,7 +94,7 @@ def saveAsCSV(conf: Any , state , batch):
                ]
     dict={
              "step":conf.step,
-             "loss":temp["loss"],
+             "loss":state["loss"],
              "L2":L2,
              "Accuracy_Top1":Accuracy_Top1,
              "Cross_Entropy":Cross_Entropy,
