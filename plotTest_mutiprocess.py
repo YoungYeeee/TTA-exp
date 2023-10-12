@@ -7,7 +7,7 @@ import gc
 import threading
 import ttab.configs.algorithms as agrth
 #mission_id = '9263'
-mission_id = '109_formal_'
+mission_id = '112_formal_'
 
 
 model_adaptation_method_choices=[
@@ -95,13 +95,13 @@ def exp1(inter_domain_choices):
                     args.batch_size=64
                     args.non_iid_ness=0.01
                     args.data_names = data_name
-                    args.corruption_num= j+1    
-                    print(f"Running experiment for domain: {domain},\nadaptation method: {adaption_method},\ndata names: {data_name},\nmodel_path:{args.ckpt_path}\n")
-                    print()
+                    args.corruption_num= j+1
+                    if i == 15:   
+                        print(f"Running experiment for domain: {domain},\nadaptation method: {adaption_method},\ndata names: {data_name},\nmodel_path:{args.ckpt_path}\n")
+                        print()                       
+                        run.main(init_config=args)
                     
-                    run.main(init_config=args)
-                    
-                    gc.collect()
+                    # gc.collect()
                     # if i == 6:
                     if i == 15:
                         break
@@ -171,9 +171,9 @@ def exp2(non_iid_ness_choices):
 t1 = threading.Thread(target=exp1,args=(inter_domain_choices,))
 t1.start()        
 non_iid_ness_choices = [0.01, 0.03, 0.09, 0.27, 0.81, 1] 
-t2 = threading.Thread(target=exp2,args=(non_iid_ness_choices,))
-t2.start()
-t2.join()
+# t2 = threading.Thread(target=exp2,args=(non_iid_ness_choices,))
+# t2.start()
+# t2.join()
 
 print('done')
 

@@ -42,7 +42,7 @@ if __name__ == "__main__":
     gc.collect()
     conf = parameters.get_args()
     conf.device="cuda:1"
-    conf.job_id='926dubugNote2'
+    conf.job_id='ValidNote'
     conf.corruption_num = '15'
     # conf.data_names = "cifar10_c_deterministic-snow-5;cifar10_c_deterministic-brightness-5;cifar10_c_deterministic-fog-5;cifar10_c_deterministic-frost-5;cifar10_c_deterministic-contrast-5;cifar10_c_deterministic-motion_blur-5;cifar10_c_deterministic-glass_blur-5;cifar10_c_deterministic-zoom_blur-5;cifar10_c_deterministic-gaussian_noise-5"
 # cifar10_c_deterministic-shot_noise-5

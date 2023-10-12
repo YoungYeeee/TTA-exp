@@ -57,7 +57,7 @@ def saveAsCSV(conf: Any , state , batch):
             conf.root_path,
             conf.model_name,
             conf.base_data_name,
-            'loss_grad',
+            'csvData',
             # f"{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.model_selection_method}_{int(conf.timestamp if conf.timestamp is not None else time.time())}-seed{conf.seed}",
             # f"{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.model_selection_method}_{str(time.time()).replace('.', '_')}-seed{conf.seed}",
             # f"{conf.job_id}_{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.inter_domain}_{conf.corruption_num}",
@@ -161,8 +161,6 @@ def _accuracy(target, output, topk):
 def accuracy_top1(target, output, topk=1):
     """Computes the precision@k for the specified values of k"""
     return _accuracy(target, output, topk)
-
-
 
 # CrossEntropy
 cross_entropy_loss = torch.nn.CrossEntropyLoss()

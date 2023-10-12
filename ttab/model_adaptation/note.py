@@ -282,48 +282,48 @@ class NOTE(BaseAdaptation):
                     self._model.eval()
                     yhat = self._model(current_batch._x)
 
-            self._model.train()
-            memory_sampled_feats, _ = self.memory.get_memory()  # get pseudo iid batch
-            memory_sampled_feats = torch.stack(memory_sampled_feats)
-            memory_sampled_feats = memory_sampled_feats.to(self._meta_conf.device)
+        #     self._model.train()
+        #     memory_sampled_feats, _ = self.memory.get_memory()  # get pseudo iid batch
+        #     memory_sampled_feats = torch.stack(memory_sampled_feats)
+        #     memory_sampled_feats = memory_sampled_feats.to(self._meta_conf.device)
 
-            nbsteps = self._get_adaptation_steps(index=len(previous_batches))
-            # import time
+        #     nbsteps = self._get_adaptation_steps(index=len(previous_batches))
+        #     # import time
  
             
-            # print(f"!!!!!!!!!!!!!!!!!!\n step:{nbsteps}\n!!!!!!!!!!!!!!!!!!!!!!!")
+        #     # print(f"!!!!!!!!!!!!!!!!!!\n step:{nbsteps}\n!!!!!!!!!!!!!!!!!!!!!!!")
 
-            # time.sleep(1)
-            log(f"\tadapt the model for {nbsteps} steps with lr={self._meta_conf.lr}.")
-            self.run_multiple_steps(
-                model=self._model,
-                optimizer=self._optimizer,
-                memory_sampled_feats=memory_sampled_feats,
-                # change
-                cal_yhat=yhat,
-                current_batch=current_batch,
-                model_selection_method=model_selection_method,
-                nbsteps=nbsteps,
-                timer=timer,
-                random_seed=self._meta_conf.seed,
-            )
+        #     # time.sleep(1)
+        #     log(f"\tadapt the model for {nbsteps} steps with lr={self._meta_conf.lr}.")
+        #     self.run_multiple_steps(
+        #         model=self._model,
+        #         optimizer=self._optimizer,
+        #         memory_sampled_feats=memory_sampled_feats,
+        #         # change
+        #         cal_yhat=yhat,
+        #         current_batch=current_batch,
+        #         model_selection_method=model_selection_method,
+        #         nbsteps=nbsteps,
+        #         timer=timer,
+        #         random_seed=self._meta_conf.seed,
+        #     )
 
-        # select the optimal checkpoint, and return the corresponding prediction.
-        with timer("select_optimal_checkpoint"):
-            optimal_state = model_selection_method.select_state()
-            log(
-                f"\tselect the optimal model ({optimal_state['step']}-th step and lr={optimal_state['lr']}) for the current mini-batch.",
-            )
+        # # select the optimal checkpoint, and return the corresponding prediction.
+        # with timer("select_optimal_checkpoint"):
+        #     optimal_state = model_selection_method.select_state()
+        #     log(
+        #         f"\tselect the optimal model ({optimal_state['step']}-th step and lr={optimal_state['lr']}) for the current mini-batch.",
+        #     )
 
-            self._model.load_state_dict(optimal_state["model"])
-            model_selection_method.clean_up()
+        #     self._model.load_state_dict(optimal_state["model"])
+        #     model_selection_method.clean_up()
 
-            if self._oracle_model_selection:
-                yhat = optimal_state["yhat"]
-                # oracle model selection needs to save steps
-                self.oracle_adaptation_steps.append(optimal_state["step"])
-                # update optimizer.
-                self._optimizer.load_state_dict(optimal_state["optimizer"])
+        #     if self._oracle_model_selection:
+        #         yhat = optimal_state["yhat"]
+        #         # oracle model selection needs to save steps
+        #         self.oracle_adaptation_steps.append(optimal_state["step"])
+        #         # update optimizer.
+        #         self._optimizer.load_state_dict(optimal_state["optimizer"])
 
         with timer("evaluate_adaptation_result"):
             metrics.eval(current_batch._y, yhat)

@@ -20,6 +20,7 @@ class NoAdaptation(BaseAdaptation):
 
     def __init__(self, meta_conf, model: nn.Module):
         super().__init__(meta_conf, model)
+        self._meta_conf.step=0
 
     def convert_iabn(self, module: nn.Module, **kwargs):
         """
@@ -63,6 +64,7 @@ class NoAdaptation(BaseAdaptation):
             self.convert_iabn(model)
             load_pretrained_model(self._meta_conf, model)
         model.eval()
+        
         return model.to(self._meta_conf.device)
 
     def _post_safety_check(self):

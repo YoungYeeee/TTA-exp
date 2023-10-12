@@ -26,7 +26,7 @@ class LastIterate(BaseSelection):
     def save_state(self, state, current_batch):
         self.optimal_state = state
         self.meta_conf.step += 1
-        loss_grad.saveAsCSV(self.meta_conf,state)
+        loss_grad.saveAsCSV(self.meta_conf,state,current_batch)
         
 
     def select_state(self) -> Dict[str, Any]:

@@ -88,7 +88,7 @@ def get_args():
         choices=["batch_wise", "sample_wise"],
         type=str,
     )
-    parser.add_argument("--batch_size", default=64, type=int)
+    parser.add_argument("--batch_size", default=1, type=int)
     parser.add_argument("--lr", default=1e-4, type=float)
     parser.add_argument("--n_train_steps", default=1, type=int)
     parser.add_argument("--offline_pre_adapt", default=False, type=str2bool)
@@ -96,7 +96,7 @@ def get_args():
     parser.add_argument("--intra_domain_shuffle", default=True, type=str2bool)
     parser.add_argument(
         "--inter_domain",
-        default="CrossHeterMixture",
+        default="CrossMixture",
         choices=[
             "HomogeneousNoMixture",
             "HeterogeneousNoMixture",
