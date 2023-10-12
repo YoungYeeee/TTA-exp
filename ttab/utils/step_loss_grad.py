@@ -60,15 +60,16 @@ def saveAsCSV(conf: Any , state , batch):
             'loss_grad',
             # f"{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.model_selection_method}_{int(conf.timestamp if conf.timestamp is not None else time.time())}-seed{conf.seed}",
             # f"{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.model_selection_method}_{str(time.time()).replace('.', '_')}-seed{conf.seed}",
-            f"{conf.job_id}_{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.inter_domain}_{conf.corruption_num}",
+            # f"{conf.job_id}_{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.inter_domain}_{conf.corruption_num}",
             # f"{conf.job_id}_{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.inter_domain}",
             )
     if not os.path.exists(conf.grad_dir):
         os.makedirs(conf.grad_dir)
-    temp = state
-    loss = state["loss"]
     print(conf)
-    L2=getL2(temp["grads"])
+    if state["grads"] is not None:
+        L2=getL2(state["grads"])
+    else:
+        L2=0
     Accuracy_Top1=accuracy_top1(
         target=batch._y, 
         output=state["yhat"]
@@ -94,7 +95,7 @@ def saveAsCSV(conf: Any , state , batch):
                ]
     dict={
              "step":conf.step,
-             "loss":temp["loss"],
+             "loss":state["loss"],
              "L2":L2,
              "Accuracy_Top1":Accuracy_Top1,
              "Cross_Entropy":Cross_Entropy,
@@ -122,7 +123,7 @@ def saveAsCSV(conf: Any , state , batch):
     #+ list(temp["grads"].keys())
     DomainNum = np.zeros(16)
     Combine = None
-    csv_file = os.path.join(conf.grad_dir, f'save.csv')
+    csv_file = os.path.join(conf.grad_dir, f"{conf.job_id}_{conf.model_name}_{conf.base_data_name}_{conf.model_adaptation_method}_{conf.inter_domain}_{conf.corruption_num}.csv")
   
     if not os.path.exists(csv_file):
         with open(csv_file, 'w', newline='') as f:
