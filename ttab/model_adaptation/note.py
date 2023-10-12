@@ -170,6 +170,7 @@ class NOTE(BaseAdaptation):
         model: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
         memory_sampled_feats: torch.Tensor,
+        cal_yhat,
         timer: Timer,
         random_seed: int = None,
     ):
@@ -206,6 +207,7 @@ class NOTE(BaseAdaptation):
             "optimizer": copy.deepcopy(optimizer).state_dict(),
             "loss": loss.item(),
             "grads": grads,
+            "yhat":cal_yhat,
         }
 
     def run_multiple_steps(
@@ -214,6 +216,7 @@ class NOTE(BaseAdaptation):
         optimizer: torch.optim.Optimizer,
         memory_sampled_feats: torch.Tensor,
         current_batch: Batch,
+        cal_yhat,
         model_selection_method: BaseSelection,
         nbsteps: int,
         timer: Timer,
@@ -224,6 +227,7 @@ class NOTE(BaseAdaptation):
                 model,
                 optimizer,
                 memory_sampled_feats,
+                cal_yhat,
                 timer,
                 random_seed=random_seed,
             )
@@ -295,6 +299,8 @@ class NOTE(BaseAdaptation):
                 model=self._model,
                 optimizer=self._optimizer,
                 memory_sampled_feats=memory_sampled_feats,
+                # change
+                cal_yhat=yhat,
                 current_batch=current_batch,
                 model_selection_method=model_selection_method,
                 nbsteps=nbsteps,
