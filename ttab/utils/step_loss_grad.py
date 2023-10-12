@@ -67,7 +67,10 @@ def saveAsCSV(conf: Any , state , batch):
     temp = state
     loss = state["loss"]
     print(conf)
-    L2=getL2(temp["grads"])
+    if state["grads"] is not None:
+        L2=getL2(state["grads"])
+    else:
+        L2=0
     Accuracy_Top1=accuracy_top1(
         target=batch._y, 
         output=state["yhat"]
